@@ -84,6 +84,7 @@ class PanelJuego extends JPanel implements KeyListener, ActionListener {
         super.paintComponent(g);
         
         if (!juegoTerminado) {
+            dibujarSuelo(g);
             for (Muro m : muros){
                 m.dibujar(g);
             }
@@ -95,7 +96,7 @@ class PanelJuego extends JPanel implements KeyListener, ActionListener {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Luz: " + puntaje, 20, 30);
-            g.drawString("Cordura: " + minero.cordura + "%", 20, 60);
+            g.drawString("Cordura: " + (int)minero.cordura + "%", 20, 60);
         } else {
             g.setColor(Color.RED);
             g.setFont(new Font("Arial", Font.BOLD, 40));
@@ -117,7 +118,7 @@ class PanelJuego extends JPanel implements KeyListener, ActionListener {
         // Colisión Enemigos vs Jugador (Ahora resta cordura en vez de matar instantáneo)
         for (int i = 0; i < enemigos.size(); i++) {
             if (minero.obtenerBordes().intersects(enemigos.get(i).obtenerBordes())) {
-                minero.cordura -= 2; // Resta vida muy rápido porque colisiona 60 veces por segundo
+                minero.cordura -= 0.5;
                 if (minero.cordura <= 0) {
                     juegoTerminado = true;
                     reloj.stop();
@@ -146,7 +147,27 @@ class PanelJuego extends JPanel implements KeyListener, ActionListener {
         enemigos.removeAll(sombrasMuertas);
         proyectiles.removeAll(proyectilesRotos);
     }
-
+    
+    private void dibujarSuelo(Graphics g) {
+        g.setColor(new Color(22, 22, 28));
+        g.fillRect(0, 0, getWidth(), getHeight());
+        
+        g.setColor(new Color(50, 50, 60));
+        for (int x = 0; x <= getWidth(); x += 40) {
+            g.drawLine(x, 0, x, getHeight());
+        }
+        for (int y = 0; y <= getHeight(); y += 40) {
+            g.drawLine(0, y, getWidth(), y);
+        }
+        
+        g.setColor(new Color(35, 35, 42));
+        for (int i = 0; i < 30; i++) {
+            int rx = (i * 73 + 17) % getWidth();
+            int ry = (i * 41 + 11) % getHeight();
+            g.fillRect(rx, ry, 2, 2);
+        }
+    }
+ 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!juegoTerminado) {

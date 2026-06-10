@@ -26,9 +26,9 @@ public class Sombra {
             }
         }
         x += velocidadX;
-        Rectangle futuroY = new Rectangle(x + y, velocidadY, tamaño, tamaño);
+        Rectangle futuroY = new Rectangle(x, y + velocidadY, tamaño, tamaño);
         for (Muro m : muros) {
-            if (futuroX.intersects(m.obtenerBordes())) {
+            if (futuroY.intersects(m.obtenerBordes())) {
                 velocidadY = -velocidadY;
                 
                 //CAOS: Decide al azar si ir para arriba o para abajo

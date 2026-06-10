@@ -5,24 +5,38 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
 public class Jugador {
     public int x, y;
     private int ancho = 30;
     private int alto = 30;
-    public int cordura = 100;
-    public int dirX = 1, dirY = 0; //// Direccion a la que mira (1 = derecha/abajo, -1 = izquierda/arriba, 0 = quieto)
-    private Image spriteJugador = new ImageIcon("C:\\Users\\julia\\OneDrive\\Escritorio\\heroe.png").getImage();
+    public double cordura = 100.0;
+    public int dirX = 1, dirY = 0; // Direccion a la que mira (1 = derecha/abajo, -1 = izquierda/arriba, 0 = quieto)
+    private Image spriteJugador;
 
     public Jugador(int xInicial, int yInicial) {
         this.x = xInicial;
         this.y = yInicial;
+        try {
+            spriteJugador = ImageIO.read(getClass().getResourceAsStream("/heroe.png"));
+        } catch (Exception e) {
+            spriteJugador = null;
+        }
     }
     
     public void dibujar(Graphics g){
-        g.setColor(Color.WHITE);//color del minero
-        g.drawImage(spriteJugador, x, y, ancho, alto, null);
+        if (spriteJugador != null) {
+            g.drawImage(spriteJugador, x, y, ancho, alto, null);
+        } else {
+            g.setColor(Color.WHITE);
+            g.fillRect(x, y, ancho, alto);
+            g.setColor(Color.LIGHT_GRAY);
+            g.fillRect(x + 4, y + 4, 6, 6);
+            g.fillRect(x + 20, y + 4, 6, 6);
+            g.setColor(Color.GRAY);
+            g.fillRect(x + 10, y + 18, 10, 4);
+        }
         //BARRA DE CORDURA
         g.setColor(Color.GREEN);
         if(cordura < 50) g.setColor(Color.RED);
