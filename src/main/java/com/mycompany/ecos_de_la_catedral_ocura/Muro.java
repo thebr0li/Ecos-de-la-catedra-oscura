@@ -16,7 +16,7 @@ public class Muro {
     
     public void dibujar(Graphics g){
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(x, y, alto, ancho);
+        g.fillRect(x, y, ancho, alto);
     }
     
     public Rectangle obtenerBordes(){
